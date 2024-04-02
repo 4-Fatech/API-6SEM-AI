@@ -1,10 +1,18 @@
 import cv2
-import numpy as np  
+import numpy as np
+from dotenv import load_dotenv 
+import os
 
 # Carregar o modelo YOLOv4 e as classes de objetos
-net = cv2.dnn.readNet("yolov4.weights", "yolov4.cfg")
+
+load_dotenv()
+yoloweights = os.getenv("YOLOWEIGHTS_PATH")
+yolocfg = os.getenv("YOLOCFG_PATH")
+coconames = os.getenv("COCONAMES_PATH")
+
+net = cv2.dnn.readNet(yoloweights, yolocfg)
 classes = []
-with open("coco.names", 'r') as f:
+with open(coconames, 'r') as f:
     classes = f.read().rstrip('\n').split('\n')
 
 # Capturar a entrada de vídeo
