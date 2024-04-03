@@ -58,28 +58,32 @@ class PeopleCounter:
         # Lado esquerdo pro direito -> entra
         # Lado direito pro esquerdo -> sai
         if class_names[cls] == "person":
-            if (x1 + w // 2 < self.line_x and box.id not in self.pessoas_detectadas_entrando):
-                #Lado esquerdo e o id nao ta no array de entrada -> adiciona
-                self.pessoas_detectadas_entrando.append(box.id)
-                self.db_handler.insert_record(True)
-            if (x1 + w // 2 > self.line_x and box.id not in self.pessoas_detectadas_saindo):
-                #Lado direito e o id nao ta no array de saida -> adiciona
-                self.pessoas_detectadas_saindo.append(box.id)
-            if x1 + w // 2 > self.line_x and box.id in self.pessoas_detectadas_entrando:
-                #Lado direito e o id esta no array de entrada -> remove
-                self.pessoas_detectadas_entrando.remove(box.id)
-                self.lotacao_atual += 1
-            if x1 + w // 2 < self.line_x and box.id in self.pessoas_detectadas_saindo:
-                #Lado esquerdo e o id esta no array de saida -> remove
-                self.pessoas_detectadas_saindo.remove(box.id)
-                if self.lotacao_atual != 0:
-                    self.lotacao_atual -= 1
-                    self.db_handler.insert_record(False)
+              if x1+w//2 > self.line_x-200 and x1+w//2 < self.line_x+200:
+                if (x1 + w // 2 < self.line_x and box.id not in self.pessoas_detectadas_entrando):
+                    #Lado esquerdo e o id nao ta no array de entrada -> adiciona
+                    self.pessoas_detectadas_entrando.append(box.id)
+                    
+                if (x1 + w // 2 > self.line_x and box.id not in self.pessoas_detectadas_saindo):
+                    #Lado direito e o id nao ta no array de saida -> adiciona
+                    self.pessoas_detectadas_saindo.append(box.id)
+                if x1 + w // 2 > self.line_x and box.id in self.pessoas_detectadas_entrando:
+                    #Lado direito e o id esta no array de entrada -> remove
+                    self.pessoas_detectadas_entrando.remove(box.id)
+                    self.lotacao_atual += 1
+                    self.db_handler.insert_record(True)
+                if x1 + w // 2 < self.line_x and box.id in self.pessoas_detectadas_saindo:
+                    #Lado esquerdo e o id esta no array de saida -> remove
+                    self.pessoas_detectadas_saindo.remove(box.id)
+                    if self.lotacao_atual != 0:
+                        self.lotacao_atual -= 1
+                        self.db_handler.insert_record(False)
 
     def display(self):
         if self.frame is not None:
             height, width, _ = self.frame.shape
             cv2.line(self.frame, (self.line_x, 0), (self.line_x, height), (0, 255, 0), 2)
+            cv2.line(self.frame, (self.line_x-200, 0), (self.line_x-200, height), (0, 255, 0), 2)
+            cv2.line(self.frame, (self.line_x+200, 0), (self.line_x+200, height), (0, 255, 0), 2)
             cv2.putText(self.frame,f"Lotacao Atual: {self.lotacao_atual}",(10, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(0, 255, 0),2,)
             cv2.imshow("frame", self.frame)
 

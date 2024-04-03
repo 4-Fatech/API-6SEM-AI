@@ -37,7 +37,6 @@ while ret:
     results = model.track(frame,persist=True)
     for r in results:
         boxes = r.boxes
-        print(boxes)
         for box in boxes:
             # Bounding Box
             x1, y1, x2, y2 = box.xyxy[0]
