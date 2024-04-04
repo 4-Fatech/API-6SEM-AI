@@ -37,7 +37,6 @@ while ret:
     results = model.track(frame,persist=True)
     for r in results:
         boxes = r.boxes
-        print(boxes)
         for box in boxes:
             # Bounding Box
             x1, y1, x2, y2 = box.xyxy[0]
@@ -52,22 +51,21 @@ while ret:
             if currentClass ==  'person':
                 cv2.rectangle(frame, (x1, y1), (x1+w, y1+h), (0, 255, 0), 2)
 
+                if x1+w//2 > line_x-200 and x1+w//2 < line_x+200:
+                    if x1+w//2 < line_x and not pessoas_detectadas_entrando.__contains__(box.id):
+                        pessoas_detectadas_entrando.append(box.id)
+                    
+                    if x1+w//2 >  line_x and not pessoas_detectadas_saindo.__contains__(box.id):
+                        pessoas_detectadas_saindo.append(box.id)
 
-              
-                if x1+w//2 < line_x and not pessoas_detectadas_entrando.__contains__(box.id):
-                    pessoas_detectadas_entrando.append(box.id)
-                   
-                if x1+w//2 >  line_x and not pessoas_detectadas_saindo.__contains__(box.id):
-                    pessoas_detectadas_saindo.append(box.id)
-
-                if x1+w//2 > line_x and  pessoas_detectadas_entrando.__contains__(box.id):
-                    pessoas_detectadas_entrando.remove(box.id)
-                    lotacao_atual = lotacao_atual + 1
-                   
-                if x1+w//2 <  line_x and  pessoas_detectadas_saindo.__contains__(box.id):
-                    pessoas_detectadas_saindo.remove(box.id)
-                    if lotacao_atual != 0:
-                        lotacao_atual = lotacao_atual -1
+                    if x1+w//2 > line_x and  pessoas_detectadas_entrando.__contains__(box.id):
+                        pessoas_detectadas_entrando.remove(box.id)
+                        lotacao_atual = lotacao_atual + 1
+                    
+                    if x1+w//2 <  line_x and  pessoas_detectadas_saindo.__contains__(box.id):
+                        pessoas_detectadas_saindo.remove(box.id)
+                        if lotacao_atual != 0:
+                            lotacao_atual = lotacao_atual -1
                     
         
 
@@ -75,6 +73,8 @@ while ret:
        
  
     cv2.line(frame, (line_x, 0), (line_x, height), (0, 255, 0), 2)
+    cv2.line(frame, (line_x-200, 0), (line_x-200, height), (0, 255, 0), 2)
+    cv2.line(frame, (line_x+200, 0), (line_x+200, height), (0, 255, 0), 2)
     cv2.putText(frame, f"Lotacao Atual: {lotacao_atual}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 
 
