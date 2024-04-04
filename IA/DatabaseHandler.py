@@ -1,39 +1,25 @@
 import os
-import mysql.connector
+from supabase import create_client, Client
 from dotenv import load_dotenv
 
 class DatabaseHandler:
     def __init__(self):
         load_dotenv()
-        self.DATABASE_USER = os.getenv("DATABASE_USER")
-        self.DATABASE_NAME = os.getenv("DATABASE_NAME")
-        self.DATABASE_HOST = os.getenv("DATABASE_HOST")
-        self.DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
+        self.URL_SUPABASE = os.getenv("URL_SUPABASE")
+        self.DATABASE_APIKEY = os.getenv("DATABASE_APIKEY")
         self.mydb = None
 
     def connect(self):
-        self.mydb = mysql.connector.connect(
-            host=self.DATABASE_HOST, user=self.DATABASE_USER, password=self.DATABASE_PASSWORD, database=self.DATABASE_NAME
-        )
+        self.mydb: Client = create_client(self.URL_SUPABASE, self.DATABASE_APIKEY)
 
     def disconnect(self):
         if self.mydb:
             self.mydb.close()
 
-    def insert_record(self, tipo):
-        if not self.mydb:
-            self.connect()
-        
-        mycursor = self.mydb.cursor()
+    def insert_record(self, tipo, quantidade):
+        self.connect()
+        data, count = self.mydb.table('log').insert({"entrada": bool(tipo), "lotacao": quantidade}).execute()
+        print("1 record inserted.")
 
-        sql = "INSERT INTO log (entrada) VALUES (%s)"
-        val = (bool(tipo),)
-        mycursor.execute(sql, val)
-
-        self.mydb.commit()
-
-        print(mycursor.rowcount, "record inserted.")
-
-# Usage
 db_handler = DatabaseHandler()
-db_handler.insert_record(True)
+db_handler.insert_record(True,6)
