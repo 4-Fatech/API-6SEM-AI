@@ -20,6 +20,3 @@ class DatabaseHandler:
         self.connect()
         data, count = self.mydb.table('log').insert({"entrada": bool(tipo), "lotacao": quantidade}).execute()
         print("1 record inserted.")
-
-db_handler = DatabaseHandler()
-db_handler.insert_record(True,6)

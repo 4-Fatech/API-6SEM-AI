@@ -1,4 +1,5 @@
 # yolo
 IA/yolov4.weights
+IA/__pycache__
 
 .env

@@ -70,13 +70,13 @@ class PeopleCounter:
                     #Lado direito e o id esta no array de entrada -> remove
                     self.pessoas_detectadas_entrando.remove(box.id)
                     self.lotacao_atual += 1
-                    self.db_handler.insert_record(True)
+                    self.db_handler.insert_record(True, self.lotacao_atual)
                 if x1 + w // 2 < self.line_x and box.id in self.pessoas_detectadas_saindo:
                     #Lado esquerdo e o id esta no array de saida -> remove
                     self.pessoas_detectadas_saindo.remove(box.id)
                     if self.lotacao_atual != 0:
                         self.lotacao_atual -= 1
-                        self.db_handler.insert_record(False)
+                        self.db_handler.insert_record(False, self.lotacao_atual)
 
     def display(self):
         if self.frame is not None:
