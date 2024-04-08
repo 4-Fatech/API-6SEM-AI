@@ -49,6 +49,7 @@ while ret:
             cls = int(box.cls[0])
             currentClass = classNames[cls]
             if currentClass ==  'person':
+
                 cv2.rectangle(frame, (x1, y1), (x1+w, y1+h), (0, 255, 0), 2)
 
                 if x1+w//2 > line_x-200 and x1+w//2 < line_x+200:
