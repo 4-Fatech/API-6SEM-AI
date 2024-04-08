@@ -54,7 +54,7 @@ class PeopleCounter:
         x1, y1, x2, y2 = map(int, box.xyxy[0])
         w, h = x2 - x1, y2 - y1
 
-        cv2.rectangle(self.frame, (x1, y1), (x1 + w, y1 + h), (0, 255, 0), 2)
+       
 
         cls = int(box.cls[0])
         # Lado esquerdo pro direito -> entra
@@ -64,15 +64,13 @@ class PeopleCounter:
         acuracia = float(box.conf) 
 
         # Pegando box ID
-        if box.id is not None:  
+        if box.id is not None and box.id.item() is not None:  
             boxId = int(box.id.item())  
             
         if class_names[cls] == "person" and acuracia >= 0.8:         
             
              # Exibir ID e Acurácia
-            text = f'Class: {class_names[cls]}, ID: {boxId}, Acuracia: {acuracia:.2f}'
-            cv2.putText(self.frame, text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-
+            cv2.rectangle(self.frame, (x1, y1), (x1 + w, y1 + h), (0, 255, 0), 2)
             if x1+w//2 > self.line_x-200 and x1+w//2 < self.line_x+200:
 
                 if (x1 + w // 2 < self.line_x and box.id not in self.pessoas_detectadas_entrando):
@@ -94,8 +92,10 @@ class PeopleCounter:
                     self.pessoas_detectadas_saindo.remove(box.id)
                     if self.lotacao_atual != 0:
                         self.lotacao_atual -= 1
-
                         self.db_handler.insert_record(False, self.lotacao_atual)
+            text = f'Class: {class_names[cls]}, ID: {int(box.id.item())}, Acuracia: {acuracia:.2f}'
+            cv2.putText(self.frame, text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
 
 
     def display(self):
