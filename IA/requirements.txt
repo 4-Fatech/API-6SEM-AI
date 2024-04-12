@@ -1,5 +1,0 @@
-mysql
-mysql-connector-python
-python-dotenv
-opencv-python
-numpy
