@@ -27,23 +27,19 @@ class PeopleCounter:
         self.db_handler = DatabaseHandler()
 
     def run(self):
+        self.db_handler.connect()
         while True:
             ret, self.frame = self.cap.read()
-
             if not ret:
                 break
-
             height, width, _ = self.frame.shape
             self.line_x = width // 2
-
             results = self.model.track(self.frame, persist=True)
             for r in results:
                 boxes = r.boxes
                 for box in boxes:
                     self.process_box(box, self.classNames)
-
             self.display()
-
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 break
 
@@ -53,8 +49,6 @@ class PeopleCounter:
     def process_box(self, box, class_names):
         x1, y1, x2, y2 = map(int, box.xyxy[0])
         w, h = x2 - x1, y2 - y1
-
-       
 
         cls = int(box.cls[0])
         # Lado esquerdo pro direito -> entra

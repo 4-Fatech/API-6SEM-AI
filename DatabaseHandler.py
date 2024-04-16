@@ -17,6 +17,5 @@ class DatabaseHandler:
             self.mydb.close()
 
     def insert_record(self, tipo, quantidade):
-        self.connect()
-        data, count = self.mydb.table('log').insert({"entrada": bool(tipo), "lotacao": quantidade}).execute()
+        self.mydb.table('log').insert({"entrada": bool(tipo), "lotacao": quantidade}).execute()
         print("1 record inserted.")
