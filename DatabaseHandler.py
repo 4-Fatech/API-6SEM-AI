@@ -16,6 +16,13 @@ class DatabaseHandler:
         if self.mydb:
             self.mydb.close()
 
-    def insert_record(self, tipo, quantidade):
-        self.mydb.table('log').insert({"entrada": bool(tipo), "lotacao": quantidade}).execute()
+    def listRedzone(self):
+        self.connect()
+        data = self.mydb.table("redzone").select("*").execute()
+        return data      
+
+    def insert_record(self, tipo, quantidade, redzone):
+        self.connect()
+        print("redzoneee",redzone)
+        self.mydb.table('log').insert({"entrada": bool(tipo), "lotacao": int(quantidade), "id_redzone":int(redzone)}).execute()
         print("1 record inserted.")
