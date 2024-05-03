@@ -4,7 +4,7 @@ import cv2
 from DatabaseHandler import DatabaseHandler
 
 class PeopleCounter:
-    def __init__(self, model_path="yolov8n.pt", video_source=0):
+    def __init__(self, model_path="yolov8n.pt", video_source='videoEdit.mp4'):
         self.model = YOLO(model_path)
         self.cap = cv2.VideoCapture(video_source)
         self.frame = None
@@ -70,9 +70,7 @@ class PeopleCounter:
         # Acuracia
         acuracia = float(box.conf) 
 
-        # Pegando box ID
-        if box.id is not None and box.id.item() is not None:  
-            boxId = int(box.id.item())  
+        # Pegando box ID 
             
         if class_names[cls] == "person" and acuracia >= 0.8:         
             
@@ -100,7 +98,7 @@ class PeopleCounter:
                     if self.lotacao_atual[redzone] != 0:
                         self.lotacao_atual[redzone] -= 1
                         self.db_handler.insert_record(False, self.lotacao_atual[redzone],redzone)
-            text = f'Class: {class_names[cls]}, ID: {int(box.id.item())}, Acuracia: {acuracia:.2f}'
+            text = f'Class: {class_names[cls]}, Acuracia: {acuracia:.2f}'
             cv2.putText(frame, text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
 
 
@@ -109,9 +107,9 @@ class PeopleCounter:
         if frame is not None:
             height, width, _ = frame.shape
             cv2.line(frame, (self.line_x, 0), (self.line_x, height), (0, 255, 0), 2)
-            cv2.line(frame, (self.line_x-200, 0), (self.line_x-200, height), (0, 255, 0), 2)
-            cv2.line(frame, (self.line_x+200, 0), (self.line_x+200, height), (0, 255, 0), 2)
-            cv2.putText(frame,f"Lotacao Atual: {self.lotacao_atual[redzone]}",(10, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(0, 255, 0),2,)
+            ##cv2.line(frame, (self.line_x-200, 0), (self.line_x-200, height), (0, 255, 0), 2)
+            ##cv2.line(frame, (self.line_x+200, 0), (self.line_x+200, height), (0, 255, 0), 2)
+            cv2.putText(frame,f"Redzone: {redzone}",(10, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(0, 255, 0),2,)
             cv2.imshow("frame"+str(redzone), frame)
 
 
