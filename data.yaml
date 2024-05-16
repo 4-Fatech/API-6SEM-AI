@@ -1,0 +1,14 @@
+patch: C:/Users/Marcelo/OneDrive - Fatec Centro Paula Souza/Desktop/API 6 Semestre IA
+train: C:/Users/Marcelo/OneDrive - Fatec Centro Paula Souza/Desktop/API 6 Semestre IA/API-6SEM-AI/train/images
+val: C:/Users/Marcelo/OneDrive - Fatec Centro Paula Souza/Desktop/API 6 Semestre IA/API-6SEM-AI/valid/images
+test: C:/Users/Marcelo/OneDrive - Fatec Centro Paula Souza/Desktop/API 6 Semestre IA/API-6SEM-AI/test/images
+
+nc: 1
+names: ['person']
+
+roboflow:
+  workspace: leo-ueno
+  project: people-detection-o4rdr
+  version: 8
+  license: Private
+  url: https://universe.roboflow.com/leo-ueno/people-detection-o4rdr/dataset/8

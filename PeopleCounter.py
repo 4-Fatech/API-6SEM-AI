@@ -4,7 +4,7 @@ import cv2
 from DatabaseHandler import DatabaseHandler
 
 class PeopleCounter:
-    def __init__(self, model_path="yolov8n.pt", video_source='videoEdit.mp4'):
+    def __init__(self, model_path="./runs/detect/train2/weights/best.pt", video_source='videoEdit.mp4'):
         self.model = YOLO(model_path)
         self.cap = cv2.VideoCapture(video_source)
         self.frame = None
@@ -12,16 +12,7 @@ class PeopleCounter:
         self.pessoas_detectadas_entrando = dict()
         self.pessoas_detectadas_saindo = dict()
         self.lotacao_atual = dict()
-        self.classNames = ["person","bicycle","car","motorbike",
-            "aeroplane","bus","train","truck","boat","traffic light","fire hydrant","stop sign",
-            "parking meter","bench","bird","cat","dog","horse","sheep","cow","elephant","bear","zebra",
-            "giraffe","backpack","umbrella","handbag","tie","suitcase","frisbee","skis","snowboard",
-            "sports ball","kite","baseball bat","baseball glove","skateboard","surfboard","tennis racket",
-            "bottle","wine glass","cup","fork","knife","spoon","bowl","banana","apple","sandwich","orange",
-            "broccoli","carrot","hot dog","pizza","donut","cake","chair","sofa","pottedplant","bed",
-            "diningtable","toilet","tvmonitor","laptop","mouse","remote","keyboard","cell phone","microwave",
-            "oven","toaster","sink","refrigerator","book","clock","vase","scissors","teddy bear","hair drier","toothbrush",
-        ]
+        self.classNames = ["person"]
 
         self.db_handler = DatabaseHandler()
 
@@ -72,7 +63,7 @@ class PeopleCounter:
 
         # Pegando box ID 
             
-        if class_names[cls] == "person" and acuracia >= 0.8:         
+        if cls < len(class_names) and class_names[cls] == "person" and acuracia >= 0.3:       
             
              # Exibir ID e Acurácia
             cv2.rectangle(frame, (x1, y1), (x1 + w, y1 + h), (0, 255, 0), 2)
