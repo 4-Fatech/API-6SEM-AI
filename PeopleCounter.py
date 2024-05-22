@@ -5,9 +5,9 @@ from DatabaseHandler import DatabaseHandler
 
 
 class PeopleCounter:
-    def __init__(self, model_path="./runs/detect/train2/weights/best.pt", video_source='videoEdit.mp4', frame_skip=5):
+    def __init__(self, model_path="./runs/detect/train2/weights/best.pt", video_source='videos/video1.mp4', frame_skip=5):
         self.model = YOLO(model_path)
-        self.cap = cv2.VideoCapture(video_source)
+        self.cap = dict()
         self.frame = None
         self.line_x = None
         self.pessoas_detectadas_entrando = dict()
@@ -27,17 +27,20 @@ class PeopleCounter:
     def run(self):
         list = self.db_handler.listRedzone()
         frame_count = 0  # Contador de frames
+        counter = 1
 
         for r in list.data:
             id = r["id_redzone"]
             self.lotacao_atual[id] = 0
             self.pessoas_detectadas_entrando[id] = []
             self.pessoas_detectadas_saindo[id] = []
+            self.cap[id] = cv2.VideoCapture(f"videos/video{counter}.mp4")
+            counter += 1
         
         while True:
             for r in list.data:
-                ret, frame = self.cap.read()
                 id = r["id_redzone"]
+                ret, frame = self.cap[id].read()
                 
                 if not ret:
                     break
@@ -102,6 +105,7 @@ class PeopleCounter:
         if frame is not None:
             height, width, _ = frame.shape
             cv2.line(frame, (self.line_x, 0), (self.line_x, height), (0, 255, 0), 2)
+            cv2.putText(self.frame,f"Lotacao Atual: {self.lotacao_atual}",(10, 50),cv2.FONT_HERSHEY_SIMPLEX,1,(0, 255, 0),2)
             cv2.putText(frame, f"Redzone: {redzone}", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
             cv2.imshow("frame" + str(redzone), frame)
 
