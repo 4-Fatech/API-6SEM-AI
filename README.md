@@ -22,19 +22,27 @@
 - [X] Cadastro do fluxo no Banco de Dados;
 
 
-#### 🧭 Rodando a aplicação (Modo desenvolvimento)
+#### 🧭 Manual de Instalação IA
 
+- Clone este repositório - É recomendável para o pleno funcionamento do projeto que seja clonado na pasta C:
 ```bash
-# Clone este repositório - É recomendável para o pleno funcionamento do projeto que seja clonado na pasta C:
-$ git clone https://github.com/4-Fatech/API-6SEM-AI.git
-# Acesse a pasta do projeto no seu terminal/cmd 
-$ cd API-6SEM-AI
-# Instale as dependências
-$ pip install -r requirements.txt
-# Execute a aplicação em modo de desenvolvimento
-$ python PeopleCounter.py
-# Obs: Necessita de uma webcam no computador, pois ela abrirá após o comando acima.
+git clone https://github.com/4-Fatech/API-6SEM-AI.git
 ```
+- Acesse a pasta do projeto no seu terminal/cmd 
+```bash
+cd API-6SEM-AI
+```
+- Instale as dependências
+```bash
+pip install -r requirements.txt
+```
+- Execute a aplicação em modo de desenvolvimento 
+```bash
+python PeopleCounter.py
+```
+
+-- Obs: Necessita de uma webcam no computador e internet conectada, pois ela abrirá após o comando acima.
+
 
 ---
 
