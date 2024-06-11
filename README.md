@@ -22,7 +22,10 @@
 - [X] Cadastro do fluxo no Banco de Dados;
 
 
-#### 🧭 Manual de Instalação IA
+---
+
+
+## 🧭 Manual de Instalação IA
 
 Para rodar esta aplicação, é necessário ter o [Python](https://www.python.org/downloads/) e o [Git](https://git-scm.com/) instalados em sua máquina.
 
