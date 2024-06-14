@@ -24,12 +24,6 @@ class PeopleCounter:
             frame_skip  # Número de frames a serem pulados entre processamentos
         )
 
-        # # Verificar se a GPU está disponível
-        # self.cuda_available = cv2.cuda.getCudaEnabledDeviceCount() > 0
-        # if self.cuda_available:
-        #     print("CUDA está disponível!")
-        # else:
-        #     print("CUDA não está disponível, utilizando CPU para processamento.")
 
     def run(self):
         list = self.db_handler.listRedzone()
@@ -61,13 +55,7 @@ class PeopleCounter:
                 height, width, _ = frame.shape
                 self.line_x = width // 2
 
-                # Converter a imagem para escala de cinza usando a GPU (CUDA), se disponível
-                # if self.cuda_available:
-                #     gpu_frame = cv2.cuda_GpuMat()
-                #     gpu_frame.upload(frame)
-                #     gpu_gray_frame = cv2.cuda.cvtColor(gpu_frame, cv2.COLOR_BGR2GRAY)
-                #     gray_frame = gpu_gray_frame.download()
-                # else:
+              
                 gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
                 self.model(frame)
